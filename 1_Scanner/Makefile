@@ -1,41 +1,24 @@
-#
-# Makefile for TINY
-# Gnu C Version
-# K. Louden 2/3/98
-#
+# NOTE: ./lex/tiny.l --> cminus.l
 
 CC = gcc
-
 CFLAGS = 
 
 OBJS = main.o util.o scan.o parse.o symtab.o analyze.o code.o cgen.o
 OBJS_FLEX = main.o util.o lex.yy.o parse.o symtab.o analyze.o code.o cgen.o
 
-.PHONY:all scanner_cimpl scanner_flex $(OBJS) $(OBJS_FLEX) lex.yy.c
+.PHONY: all scanner_cimpl scanner_flex $(OBJS) $(OBJS_FLEX) lex.yy.c
 
 all: scanner_cimpl scanner_flex
 
-scanner_cimpl:$(OBJS)
+scanner_cimpl: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $@
 
-scanner_flex:$(OBJS_FLEX)
+scanner_flex: $(OBJS_FLEX)
 	$(CC) $(CFLAGS) $(OBJS_FLEX) -o $@ -lfl
 
-lex.yy.o:cminus.l
+lex.yy.o: cminus.l
 	flex $^
 	$(CC) $(CFLAGS) -c lex.yy.c
-
-#by flex
-#OBJS_FLEX = main.o globals.h util.o lex.yy.o
-#cminus_flex: $(OBJS_FLEX)
-#	$(CC) $(CFLAGS) main.o util.o lex.yy.o -o cminus_flex -lfl
-
-#lex.yy.o: cminus.l scan.h util.h globals.h
-#	flex cminus.l
-#	$(CC) $(CFLAGS) -c lex.yy.c -lfl
-
-#tiny: $(OBJS)
-#	$(CC) $(CFLAGS) $(OBJS) -o tiny
 
 main.o: main.c globals.h util.h scan.h parse.h analyze.h cgen.h
 	$(CC) $(CFLAGS) -c main.c
