@@ -16,6 +16,7 @@
 static char * savedName; /* for use in assignments */
 static int savedLineNo;  /* ditto */
 static TreeNode * savedTree; /* stores syntax tree for later return */
+static int yylex(void); // added 11/2/11 to ensure no conflict with lex
 
 %}
 
