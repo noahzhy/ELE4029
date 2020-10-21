@@ -971,19 +971,12 @@ YY_RULE_SETUP
 #line 69 "cminus.l"
 { return ERROR;}
 	YY_BREAK
-/* { char c;
-                  do
-                  { c = input();
-                    if (c == EOF) break;
-                    if (c == '\n') lineno++;
-                  } while (c != '}');
-                }*/
 case 38:
 YY_RULE_SETUP
-#line 78 "cminus.l"
+#line 71 "cminus.l"
 ECHO;
 	YY_BREAK
-#line 987 "lex.yy.c"
+#line 980 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1988,7 +1981,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "cminus.l"
+#line 71 "cminus.l"
 
 
 TokenType getToken(void)

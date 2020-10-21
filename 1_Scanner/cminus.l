@@ -67,13 +67,6 @@ whitespace  [ \t]+
 					}while(c);
 				}
 .				{ return ERROR;}
-		/* { char c;
-                  do
-                  { c = input();
-                    if (c == EOF) break;
-                    if (c == '\n') lineno++;
-                  } while (c != '}');
-                }*/
 
 %%
 

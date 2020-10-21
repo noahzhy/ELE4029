@@ -76,7 +76,8 @@ static struct
 {
   char *str;
   TokenType tok;
-} reservedWords[MAXRESERVED] = {{"if", IF}, {"else", ELSE}, {"while", WHILE}, {"return", RETURN}, {"int", INT}, {"void", VOID}, {"then", THEN}, {"end", END}, {"repeat", REPEAT}, {"until", UNTIL}, {"read", READ}, {"write", WRITE}};
+} reservedWords[MAXRESERVED] = {
+    {"if", IF}, {"else", ELSE}, {"while", WHILE}, {"return", RETURN}, {"int", INT}, {"void", VOID}, {"then", THEN}, {"end", END}, {"repeat", REPEAT}, {"until", UNTIL}, {"read", READ}, {"write", WRITE}};
 
 /* lookup an identifier to see if it is a reserved word */
 /* uses linear search */
@@ -115,21 +116,18 @@ TokenType getToken(void)
         state = INNUM;
       else if (isalpha(c))
         state = INID;
-      else if (c == '=')
-        state = INEQ;
       else if ((c == ' ') || (c == '\t') || (c == '\n'))
         save = FALSE;
-      else if (c == '>')
-        state = INGT;
       else if (c == '<')
         state = INLT;
-      else if (c == '/')
-      {
-        save = FALSE;
-        state = INOVER;
-      }
+      else if (c == '>')
+        state = INGT;
+      else if (c == '=')
+        state = INEQ;
       else if (c == '!')
         state = INNE;
+      else if (c == '/')
+        state = INOVER;
       else
       {
         state = DONE;
@@ -138,12 +136,6 @@ TokenType getToken(void)
         case EOF:
           save = FALSE;
           currentToken = ENDFILE;
-          break;
-        case '=':
-          currentToken = EQ;
-          break;
-        case '<':
-          currentToken = LT;
           break;
         case '+':
           currentToken = PLUS;
@@ -184,13 +176,18 @@ TokenType getToken(void)
         }
       }
       break;
-    case INNE:
-      state = DONE;
-      if (c == '=')
-        currentToken = NE;
+    case INOVER:
+      save = FALSE;
+      if (c == '*')
+      {
+        state = INCOMMENT;
+        tokenStringIndex--;
+      }
       else
       {
-        currentToken = ERROR;
+        state = DONE;
+        ungetNextChar();
+        currentToken = OVER;
       }
       break;
     case INCOMMENT:
@@ -203,29 +200,6 @@ TokenType getToken(void)
       else if (c == '*')
         state = INCOMMENT_;
       break;
-    case INLT:
-      state = DONE;
-      if (c == '=')
-        currentToken = LE;
-      else
-      {
-        ungetNextChar();
-        currentToken = LT;
-      }
-      break;
-    case INOVER:
-      if (c == '*')
-      {
-        state = INCOMMENT;
-        save = FALSE;
-      }
-      else
-      {
-        ungetNextChar();
-        state = DONE;
-        currentToken = OVER;
-      }
-      break;
     case INCOMMENT_:
       save = FALSE;
       if (c == EOF)
@@ -233,10 +207,45 @@ TokenType getToken(void)
         state = DONE;
         currentToken = ENDFILE;
       }
+      else if (c == '*')
+        state = INCOMMENT_;
       else if (c == '/')
         state = START;
       else
         state = INCOMMENT;
+      break;
+    case INEQ:
+      state = DONE;
+      if (c == '=')
+        currentToken = EQ;
+      else
+      { /* backup in the input */
+        ungetNextChar();
+        save = FALSE;
+        currentToken = ASSIGN;
+      }
+      break;
+    case INNE:
+      state = DONE;
+      if (c == '=')
+        currentToken = NE;
+      else
+      {
+        ungetNextChar();
+        save = FALSE;
+        currentToken = ERROR;
+      }
+      break;
+    case INLT:
+      state = DONE;
+      if (c == '=')
+        currentToken = LE;
+      else
+      {
+        ungetNextChar();
+        save = FALSE;
+        currentToken = LT;
+      }
       break;
     case INGT:
       state = DONE;
@@ -245,17 +254,8 @@ TokenType getToken(void)
       else
       {
         ungetNextChar();
+        save = FALSE;
         currentToken = GT;
-      }
-      break;
-    case INEQ:
-      state = DONE;
-      if (c == '=')
-        currentToken = EQ;
-      else
-      {
-        currentToken = ASSIGN;
-        ungetNextChar();
       }
       break;
     case INNUM:
