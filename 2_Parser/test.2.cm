@@ -1,0 +1,8 @@
+/* Semantic Error Example */
+/* (1) uninitialized variables a and b (2) undefined variable c */
+int main ( void )
+{
+    inta;
+    intb;
+    c = a + b;
+}
