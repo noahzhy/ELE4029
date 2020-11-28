@@ -167,7 +167,7 @@ void printTree( TreeNode * tree )
           fprintf(listing,"Compound statement :\n");
           break;
         case RetK:
-          fprintf(listing,"Return\n");
+          fprintf(listing,"Return :\n");
           break;
         default:
           fprintf(listing,"Unknown StmtNode kind\n");
@@ -181,12 +181,12 @@ void printTree( TreeNode * tree )
             fprintf(listing,"Assign : (destination) (source)\n");
           }
           else{
-            fprintf(listing,"Op: ");
+            fprintf(listing,"Op : ");
             printToken(tree->attr.op,"");
           }
           break;
         case ConstK:
-          fprintf(listing,"Const: %d\n",tree->attr.val);
+          fprintf(listing,"Const : %d\n",tree->attr.val);
           break;
         case IdK:
           fprintf(listing,"Id : %s\n",tree->attr.name);
@@ -214,15 +214,10 @@ void printTree( TreeNode * tree )
           fprintf(listing,"Function declaration, name : %s, return type : %s\n",tree->attr.name, typeStrings[tree->type]);
           break;
         case ParamK:
-          /*
-          if(tree->type == 0)
-            fprintf(listing,"Param: %s\n",tree->type);
-          else
-          */
           if(tree->type == Array)
-            fprintf(listing,"array Param, name : %s, type : %s , size : %d\n",tree->attr.name, typeStrings[tree->type], tree->size);
+            fprintf(listing,"Array param, name : %s, type : %s , size : %d\n",tree->attr.name, typeStrings[tree->type], tree->size);
           else
-            fprintf(listing,"single Parameter, name : %s, type : %s\n",tree->attr.name, typeStrings[tree->type]);
+            fprintf(listing,"Single parameter, name : %s, type : %s\n",tree->attr.name, typeStrings[tree->type]);
           break;
         default:
           fprintf(listing,"Unknown DecNode kind\n");

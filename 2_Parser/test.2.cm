@@ -2,7 +2,7 @@
 /* (1) uninitialized variables a and b (2) undefined variable c */
 int main ( void )
 {
-    inta;
-    intb;
+    int a;
+    int b;
     c = a + b;
 }

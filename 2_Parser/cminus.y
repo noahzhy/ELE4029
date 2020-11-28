@@ -5,25 +5,24 @@
 /* Kenneth C. Louden                                */
 /****************************************************/
 %{
-#define YYPARSER /* distinguishes Yacc output from other code files */
+#define YYPARSER
+#define YYSTYPE TreeNode *
 
 #include "globals.h"
 #include "util.h"
 #include "scan.h"
 
-#define YYSTYPE TreeNode *
-static char * savedName; /* for use in assignments */
+static char * savedName;
 static int savedNum;
-static int savedLineNo;  /* ditto */
-static TreeNode * savedTree; /* stores syntax tree for later return */
-static int yylex(void); // added 11/2/11 to ensure no conflict with lex
+static int savedLineNo;
+static TreeNode * savedTree;
+static int yylex(void);
 
-static TreeNode *l = NULL; /* local dec list */
-static TreeNode *s = NULL; /* stmt list */
-static TreeNode *d = NULL; /* dec list */
-static TreeNode *p = NULL; /* params list */
-static TreeNode *a = NULL; /* argument list */
-
+static TreeNode *l = NULL;
+static TreeNode *s = NULL;
+static TreeNode *d = NULL;
+static TreeNode *p = NULL;
+static TreeNode *a = NULL;
 %}
 
 %token IF ELSE RETURN WHILE VOID INT
