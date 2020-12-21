@@ -50,11 +50,11 @@
 /* Yacc/Bison generates its own integer values
  * for tokens
  */
-typedef int TokenType; 
+typedef int TokenType;
 
-extern FILE* source; /* source code text file */
-extern FILE* listing; /* listing output text file */
-extern FILE* code; /* code text file for TM simulator */
+extern FILE *source;  /* source code text file */
+extern FILE *listing; /* listing output text file */
+extern FILE *code;    /* code text file for TM simulator */
 
 extern int lineno; /* source line number for listing */
 
@@ -62,45 +62,92 @@ extern int lineno; /* source line number for listing */
 /***********   Syntax tree for parsing ************/
 /**************************************************/
 
-typedef enum {StmtK,ExpK,DeclK,ParamK,TypeK} NodeKind;
-typedef enum {CompK,IfK,IfEK,IterK,RetK} StmtKind;
-typedef enum {AssignK,OpK,ConstK,IdK,ArrIdK,CallK} ExpKind;
-typedef enum {FuncK,VarK,ArrVarK} DeclKind;
-typedef enum {ArrParamK,NonArrParamK} ParamKind;
-typedef enum {TypeNameK} TypeKind;
+typedef enum
+{
+  StmtK,
+  ExpK,
+  DeclK,
+  ParamK,
+  TypeK
+} NodeKind;
+typedef enum
+{
+  CompK,
+  IfK,
+  IfEK,
+  IterK,
+  RetK
+} StmtKind;
+typedef enum
+{
+  AssignK,
+  OpK,
+  ConstK,
+  IdK,
+  ArrIdK,
+  CallK
+} ExpKind;
+typedef enum
+{
+  FuncK,
+  VarK,
+  ArrVarK
+} DeclKind;
+typedef enum
+{
+  ArrParamK,
+  NonArrParamK
+} ParamKind;
+typedef enum
+{
+  TypeNameK
+} TypeKind;
 
 /* ArrayAttr is used for attributes of array variable */
 typedef struct arrayAttr
-   { TokenType type;
-     char * name;
-     int size;
-   } ArrayAttr;
+{
+  TokenType type;
+  char *name;
+  int size;
+} ArrayAttr;
 
 /* ExpType is used for type checking */
-typedef enum {Void,Integer,IntegerArray} ExpType;
+typedef enum
+{
+  Void,
+  Integer,
+  IntegerArray
+} ExpType;
 
 #define MAXCHILDREN 3
 
 struct ScopeRec;
 
 typedef struct treeNode
-   { struct treeNode * child[MAXCHILDREN];
-     struct treeNode * sibling;
-     int lineno;
-     NodeKind nodekind;
-     union { StmtKind stmt; 
-             ExpKind exp;
-             DeclKind decl;
-             ParamKind param;
-             TypeKind type; } kind;
-     union { TokenType op;
-             TokenType type;
-             int val;
-             char * name;
-             ArrayAttr arr; 
-             struct Scope * scope; } attr;
-     ExpType type; /* for type checking of exps */
-   } TreeNode;
+{
+  struct treeNode *child[MAXCHILDREN];
+  struct treeNode *sibling;
+  int lineno;
+  NodeKind nodekind;
+  union
+  {
+    StmtKind stmt;
+    ExpKind exp;
+    DeclKind decl;
+    ParamKind param;
+    TypeKind type;
+  } kind;
+  union
+  {
+    TokenType op;
+    TokenType type;
+    int val;
+    char *name;
+    ArrayAttr arr;
+    struct Scope *scope;
+  } attr;
+  ExpType type; /* for type checking of exps */
+} TreeNode;
 
 /**************************************************/
 /***********   Flags for tracing       ************/
@@ -135,5 +182,5 @@ extern int TraceAnalyze;
 extern int TraceCode;
 
 /* Error = TRUE prevents further passes if an error occurs */
-extern int Error; 
+extern int Error;
 #endif
