@@ -76,6 +76,32 @@ typedef struct ScopeListRec
 
 Create a BucketList structure to store nodes and a ScopeList structure to wrap it while traversing the Syntax Tree.
 
+```c++
+void st_insert(char *name, int lineno, int loc, TreeNode *treeNode);
+int st_lookup(char *name);
+void st_add_lineno(char *name, int lineno);
+int st_lookup_top(char *name);
+
+BucketList get_bucket(char *name);
+ScopeList sc_create(char *funcName);
+ScopeList sc_top(void);
+void sc_pop(void);
+void sc_push(ScopeList scope);
+int addLocation(void);
+```
+
+Implement Static Scope, add functions that manage Scope as Stack.
+
+```c++
+void printSymTab(FILE *listing);
+void print_SymTab(FILE *listing);
+void print_FuncTab(FILE *listing);
+void print_Func_globVar(FILE *listing);
+void print_FuncP_N_LoclVar(FILE *listing);
+```
+
+To print functions or symbol table.
+
 ### analyze.c
 
 ```c++
@@ -92,7 +118,7 @@ static void beforeCheckNode(TreeNode * t);
 
 Compound State is added in the insertNode function, a new scope is created and pushed to the stack. And when exiting the Compound State through the afterInsertNode function, the Stack is popped.
 
-If there is a new declaration, check the HashTable of the current scope to see if there are any duplicates. Also, when using a variable, search from the top of the current Scope Stack to check if the variable exists.
+When a new declaration, check the HashTable of the current scope to see if there are any duplicates. Also, when using a variable, search from the top of the current Scope Stack to check if the variable exists.
 
 ### globals.h
 
